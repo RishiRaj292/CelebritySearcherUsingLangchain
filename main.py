@@ -2,7 +2,7 @@
 import os
 import streamlit as st
 from constants import openai_key
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 
 
 os.environ["OPENAI_API_KEY"] = openai_key
@@ -18,3 +18,4 @@ if input_text:
     st.write(llm(input_text))
 
 #this is a test update
+#this is another update 
