@@ -48,18 +48,27 @@ third_input_prompt=PromptTemplate(input_variables=['dob'],template="Give 5 thing
 chain3=LLMChain(llm=llm_with_memory,prompt=third_input_prompt,verbose=True,output_key='description')
 
 # parent_chain=SimpleSequentialChain(chain=[chain,chain2],verbose=True)
-parent_chain=SequentialChain(chains=[chain,chain2,chain3],input_variables=['name'],output_variables=['person','dob','description'], verbose=True)
+# The following SequentialChain usage does not propagate the config correctly,
+# so we'll manually chain the calls below.
+# parent_chain=SequentialChain(chains=[chain,chain2,chain3],input_variables=['name'],output_variables=['person','dob','description'], verbose=True)
 
 if input_text:
     session_id = "user_session"  # Replace with a unique identifier as needed
     # st.write(llm(input_text))
 
     #next format for when SimpleSequentialgame are we-
-
     # st.write(parent_chain.run(input_text)
-
-    #now,for the 
-    response = parent_chain.invoke({'name': input_text}, config={"configurable": {"session_id": session_id}})
+    
+    # Manual sequential chaining with config propagation:
+    person_output = chain.invoke({'name': input_text}, config={"configurable": {"session_id": session_id}})
+    dob_output = chain2.invoke({'name': input_text}, config={"configurable": {"session_id": session_id}})
+    description_output = chain3.invoke({'dob': dob_output['dob']}, config={"configurable": {"session_id": session_id}})
+    
+    response = {
+        'person': person_output['person'],
+        'dob': dob_output['dob'],
+        'description': description_output['description']
+    }
     st.write(response)
     
     with st.expander('Person Name'): 
