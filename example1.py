@@ -2,7 +2,7 @@
 import os
 import streamlit as st
 from constants import openai_key
-from langchain_openai import ChatOpenAI
+from langchain_community.llms import OpenAI
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 # from langchain.chains import SimpleSequentialChain
@@ -30,7 +30,7 @@ def get_session_history(session_id: str) -> InMemoryChatMessageHistory:
 first_input_prompt=PromptTemplate(input_variables=['name'],template="Tell me about celebrity {name}")
 
 ##1st part of chain of LLM or we can say the first chain of LLM-
-llm = ChatOpenAI(temperature=0.8)
+llm = OpenAI(temperature=0.8)
 
 # Memory integration using new approach
 llm_with_memory = RunnableWithMessageHistory(llm, get_session_history)
