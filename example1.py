@@ -48,7 +48,7 @@ third_input_prompt=PromptTemplate(input_variables=['dob'],template="Give 5 thing
 chain3=LLMChain(llm=llm_with_memory,prompt=third_input_prompt,verbose=True,output_key='description')
 
 # parent_chain=SimpleSequentialChain(chain=[chain,chain2],verbose=True)
-parent_chain=SequentialChain(chain=[chain,chain2,chain3],input_variables=['name'],output_variables=['person','dob','description'], verbose=True)
+parent_chain=SequentialChain(chains=[chain,chain2,chain3],input_variables=['name'],output_variables=['person','dob','description'], verbose=True)
 
 if input_text:
     session_id = "user_session"  # Replace with a unique identifier as needed
