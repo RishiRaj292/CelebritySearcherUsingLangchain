@@ -59,7 +59,7 @@ if input_text:
     # st.write(parent_chain.run(input_text)
 
     #now,for the 
-    response = parent_chain({'name':input_text})
+    response = parent_chain.invoke({'name': input_text}, config={"configurable": {"session_id": session_id}})
     st.write(response)
     
     with st.expander('Person Name'): 
